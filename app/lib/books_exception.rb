@@ -1,0 +1,2 @@
+class BooksException < StandardError
+end

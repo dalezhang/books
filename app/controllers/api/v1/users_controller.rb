@@ -16,6 +16,18 @@ module Api
         render json: @user
       end
 
+      def borrow_book
+        service = BooksService.new
+        books_transaction = service.borrow(user.id, book.id)
+        render json: books_transaction
+      end
+
+      def return_book
+        service = BooksService.new
+        books_transaction = service.return(user.id, book.id)
+        render json: books_transaction
+      end
+
       private
 
       def user_params
@@ -25,6 +37,17 @@ module Api
           :name,
           :email
         )
+      end
+
+      def user
+        @user = User.find(params[:id])
+      end
+
+      def book
+        raise BooksException, 'params book_id is require!' unless params[:book_id].present?
+        @book = Book.find_by_id(params[:book_id])
+        raise BooksException, "can`t find book by params book_id #{params[:book_id]}" unless @book.present?
+        @book
       end
     end
   end

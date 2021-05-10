@@ -5,8 +5,8 @@ class User < ApplicationRecord
   has_many :user_amount_transactions
   before_create :set_initial_amount
 
-  def unreturnd_books
-    books.joins(:books_transactions).where(books_transactions: { status: :no_returned })
+  def unreturnd_books_transactions
+    books_transactions.where(books_transactions: { status: :no_returned })
   end
 
   private

@@ -15,13 +15,15 @@ module Api
         @user = User.find(params[:id])
         render json: @user
       end
+
       private
 
       def user_params
-        raise BooksException, 'params users is require!'  unless params[:users].present?
+        raise BooksException, 'params users is require!' unless params[:users].present?
+
         params.require(:users).permit(
           :name,
-          :email,
+          :email
         )
       end
     end

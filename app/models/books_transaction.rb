@@ -3,11 +3,11 @@ class BooksTransaction < ApplicationRecord
   belongs_to :book
   enum status: {
     no_returned: 0,
-    returned: 1,
+    returned: 1
   }
   enum option: {
     out: 1,
-    back: 2,
+    back: 2
   }
   include AASM
   aasm column: :status, whiny_transitions: true, enum: true do

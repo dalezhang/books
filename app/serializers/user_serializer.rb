@@ -3,5 +3,4 @@ class UserSerializer < ActiveModel::Serializer
 
   has_many :unreturnd_books
   has_many :user_amount_transactions
-
 end

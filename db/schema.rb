@@ -34,7 +34,7 @@ ActiveRecord::Schema.define(version: 2021_05_09_041014) do
 
   create_table "user_amount_transactions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.integer "user_id", null: false
-    t.integer "book_transaction_id"
+    t.integer "books_transaction_id"
     t.integer "from_amount", default: 0
     t.integer "to_amount", default: 0
     t.integer "option", default: 0

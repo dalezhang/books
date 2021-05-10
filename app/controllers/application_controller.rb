@@ -4,6 +4,7 @@ class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound do |exception|
     render json: { message: exception.message }, status: :not_found
   end
+
   private
 
   def render_error_messages(e)

@@ -2,6 +2,7 @@ class BooksTransaction < ApplicationRecord
   belongs_to :user
   belongs_to :book
   has_one :parent, class_name: 'BooksTransaction', foreign_key: :parent_id, required: false
+  has_one :user_amount_transaction, required: false
   enum status: {
     no_returned: 0,
     returned: 1

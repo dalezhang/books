@@ -1,35 +1,32 @@
 class BooksService
-  COST = 1
   def borrow(user_id, book_id)
     books_transaction = nil
-    User.transaction do
-      Book.transaction do
-        BooksTransaction.transaction do
-          user = User.lock(true).find(user_id)
-          book = Book.lock(true).find(book_id)
-          raise BooksException, "user #{user_id} amount should > 0" if user.amount < COST
-          raise BooksException, "Book #{book_id} count should > 1" if book.count < 1
+    Book.transaction do
+      BooksTransaction.transaction do
+        user = User.find(user_id)
+        book = Book.lock(true).find(book_id)
+        raise BooksException, "Book #{book_id} count should > 1" if book.count < 1
+        raise BooksException, "User #{user_id} amount than 1" if user.amount < 1
 
-          user.amount -= COST
-          user.freeze_amount += COST
-          user.save!
-          # create BooksTransaction
-          books_transaction = BooksTransaction.create!(
-            user: user,
-            book: book,
-            from_count: book.count,
-            option: :out,
-            to_count: book.count - 1
-          )
-          book.count -= 1
-          book.save!
-        end
+        # create BooksTransaction
+        books_transaction = BooksTransaction.create!(
+          user: user,
+          book: book,
+          from_count: book.count,
+          option: :out,
+          to_count: book.count - 1
+        )
+        book.count -= 1
+        book.save!
       end
-      books_transaction
     end
+    books_transaction
   end
 
-  def return(user_id, book_id)
+  def return(user_id, book_id, cost)
+    raise BooksException, 'cost must be integer' unless cost.class.to_s == 'Integer'
+    raise BooksException, 'cost must must be greater than or equal to' if cost < 0
+
     new_books_transaction = nil
     User.transaction do
       Book.transaction do
@@ -44,6 +41,9 @@ class BooksService
                                                        status: :no_returned
                                                      ).first
           raise BooksException, "book #{book_id} is already return" unless parent_books_transaction.present?
+          if user.amount <= cost
+            raise BooksException, "User #{user_id} amount should be greater than or equal to cost: #{cost}"
+          end
 
           # return book
           parent_books_transaction.return!
@@ -65,13 +65,13 @@ class BooksService
             user: user,
             option: :borrow_book,
             books_transaction: new_books_transaction,
-            amount: COST,
-            from_amount: user.amount + COST,
-            to_amount: user.amount
+            amount: cost,
+            from_amount: user.amount,
+            to_amount: user.amount - cost
           )
-          user.freeze_amount -= COST
+          user.amount -= cost
           user.save!
-          book.total_income += 1
+          book.total_income += cost
           book.save!
         end
       end

@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :books, through: :books_transactions
   has_many :user_amount_transactions
   before_create :set_initial_amount
+  validates :amount, numericality: { greater_than_or_equal_to: 0 }
 
   def unreturnd_books_transactions
     books_transactions.where(books_transactions: { status: :no_returned })

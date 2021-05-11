@@ -21,6 +21,7 @@
   * from_amount
   * to_amount
   * option (borrow_book: 1, recharge: 2)
+
 # API
 ### users
 ##### create
@@ -46,8 +47,7 @@ Host: 0.0.0.0:3000
 ```
 {
     "id": 1,
-    "total_amount": 997,
-    "freeze_amount": 1,
+    "amount": 997,
     "name": "dale",
     "email": "example@qq.com",
     "unreturnd_books_transactions": [
@@ -146,30 +146,49 @@ Host: 0.0.0.0:3000
 ```
 POST /v1/users/1/return_book?book_id=1 HTTP/1.1
 Host: 0.0.0.0:3000
+Content-Type: application/json
+Content-Length: 35
+
+{
+    "book_id": 1,
+    "cost": 3
+}
 ```
 ```
 {
-    "id": 9,
-    "from_count": 5,
-    "to_count": 6,
+    "id": 12,
+    "from_count": 6,
+    "to_count": 7,
     "option": "back",
-    "created_at": "2021-05-10T10:08:08.661Z",
-    "updated_at": "2021-05-10T10:08:08.661Z",
+    "created_at": "2021-05-11T06:11:41.387Z",
+    "updated_at": "2021-05-11T06:11:41.387Z",
     "status": "returned",
-    "parent_id": 6,
+    "parent_id": 8,
+    "book_id": 1,
     "book": {
-        "count": 6,
+        "count": 7,
         "id": 1,
-        "total_income": 3,
+        "total_income": 9,
         "name": "Bloody Mutant",
         "created_at": "2021-05-10T08:24:11.541Z",
-        "updated_at": "2021-05-10T10:08:08.680Z"
+        "updated_at": "2021-05-11T06:11:41.417Z"
     },
     "user": {
         "id": 1,
-        "amount": 997,
+        "amount": 1190,
         "name": "dale",
         "email": "example@qq.com"
+    },
+    "user_amount_transaction": {
+        "id": 6,
+        "user_id": 1,
+        "books_transaction_id": 12,
+        "from_amount": 1193,
+        "to_amount": 1190,
+        "option": "borrow_book",
+        "created_at": "2021-05-11T06:11:41.408Z",
+        "updated_at": "2021-05-11T06:11:41.408Z",
+        "amount": 3
     }
 }
 # already returned
@@ -177,6 +196,30 @@ Host: 0.0.0.0:3000
     "base": [
         "book 1 is already return"
     ]
+}
+```
+##### recharge
+```
+POST /v1/users/1/recharge?amount=100 HTTP/1.1
+Host: 0.0.0.0:3000
+Content-Type: application/json
+Content-Length: 21
+
+{
+    "amount": 100
+}
+```
+```
+{
+    "id": 4,
+    "user_id": 1,
+    "books_transaction_id": null,
+    "from_amount": 1096,
+    "to_amount": 1196,
+    "option": "recharge",
+    "created_at": "2021-05-11T06:09:11.196Z",
+    "updated_at": "2021-05-11T06:09:11.196Z",
+    "amount": 100
 }
 ```
 ### books
@@ -190,6 +233,7 @@ Host: 0.0.0.0:3000
 GET /v1/books/1 HTTP/1.1
 Host: 0.0.0.0:3000
 ```
+
 ```
 {
     "id": 1,

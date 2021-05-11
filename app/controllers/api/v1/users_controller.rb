@@ -16,6 +16,16 @@ module Api
         render json: @user
       end
 
+      def recharge
+        service = RechargeService.new
+        if params[:amount].present?
+          user_amount_transaction = service.recharge(user.id, params[:amount].to_i)
+          render json: user_amount_transaction
+        else
+          raise BooksException, 'params amount is pequired!'
+        end
+      end
+
       def borrow_book
         service = BooksService.new
         books_transaction = service.borrow(user.id, book.id)
@@ -24,8 +34,12 @@ module Api
 
       def return_book
         service = BooksService.new
-        books_transaction = service.return(user.id, book.id)
-        render json: books_transaction
+        if params[:cost].present?
+          books_transaction = service.return(user.id, book.id, params[:cost])
+          render json: books_transaction
+        else
+          raise BooksException, 'params cost is pequired!'
+        end
       end
 
       private

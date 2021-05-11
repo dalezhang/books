@@ -5,4 +5,5 @@ class BooksTransactionSerializer < ActiveModel::Serializer
 
   has_one :book
   has_one :user
+  has_one :user_amount_transaction
 end

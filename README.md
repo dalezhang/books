@@ -1,6 +1,7 @@
 # tables
 * users
   * amount
+  * frezze_amount
   * name
 * books
   * count
@@ -45,7 +46,8 @@ Host: 0.0.0.0:3000
 ```
 {
     "id": 1,
-    "amount": 997,
+    "total_amount": 997,
+    "freeze_amount": 1,
     "name": "dale",
     "email": "example@qq.com",
     "unreturnd_books_transactions": [

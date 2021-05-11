@@ -12,7 +12,6 @@ module Api
         @books_transaction = BooksTransaction.find(params[:id])
         render json: @books_transaction
       end
-
     end
   end
 end

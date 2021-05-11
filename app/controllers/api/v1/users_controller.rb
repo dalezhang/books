@@ -45,8 +45,10 @@ module Api
 
       def book
         raise BooksException, 'params book_id is require!' unless params[:book_id].present?
+
         @book = Book.find_by_id(params[:book_id])
         raise BooksException, "can`t find book by params book_id #{params[:book_id]}" unless @book.present?
+
         @book
       end
     end

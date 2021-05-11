@@ -9,8 +9,10 @@ describe BooksService  do
         service = BooksService.new
         books_transaction = service.borrow(user.id, book.id)
         book.reload
+        user.reload
 
         expect(origin_count - book.count).to eq(1)
+        expect(user.freeze_amount).to eq(BooksService::COST)
         expect(books_transaction.status).to eq("no_returned")
         expect(books_transaction.option).to eq("out")
         expect(books_transaction.user_id).to eq(user.id)
@@ -19,11 +21,11 @@ describe BooksService  do
     end
     context 'return book' do
       it 'should increase book count and create a BooksTransaction and a UserAmountTransaction' do
+        origin_amount = user.amount
         service = BooksService.new
         parent_books_transaction = service.borrow(user.id, book.id)
         book.reload
         origin_count = book.count
-        origin_amount = user.amount
 
         service = BooksService.new
         return_books_transaction = service.return(user.id, book.id)

@@ -1,4 +1,4 @@
-source 'http://rubygems.org'
+source 'https://gems.ruby-china.com'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '2.7.2'
@@ -49,3 +49,4 @@ gem 'mysql2'
 gem 'ransack'
 gem 'active_model_serializers'
 gem 'aasm'
+gem 'mina'

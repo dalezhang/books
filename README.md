@@ -25,6 +25,7 @@
 # API
 ### users
 ##### create
+* Create a user with name and email, new user will have 1000 amount.
 ```
 POST /v1/users?name=dale&email=example@mail.com HTTP/1.1
 Host: 0.0.0.0:3000
@@ -40,6 +41,9 @@ Content-Length: 82
 
 ```
 ##### show
+* Query user profile by user id.
+* List borrow book records which not returned yet.
+* List amount change records include borrow books cost and recharge.
 ```
 GET /v1/users/1 HTTP/1.1
 Host: 0.0.0.0:3000
@@ -112,6 +116,8 @@ Host: 0.0.0.0:3000
 }
 ```
 ##### borrow_book
+* Borrow a book with user_id and book_id.
+* Can't borrow a book if user's amount less than 1.
 ```
 POST /v1/users/1/borrow_book?book_id=1 HTTP/1.1
 Host: 0.0.0.0:3000
@@ -142,7 +148,11 @@ Host: 0.0.0.0:3000
     }
 }
 ```
-##### return_boos
+##### return_books
+* Return a book whith user_id and book_id and cost.
+* If user's amount is less than the cost, a error message will be return.
+* If this book already been returned, a error message will be return.
+* if user's amount is not emough to pay, please recharge first.
 ```
 POST /v1/users/1/return_book?book_id=1 HTTP/1.1
 Host: 0.0.0.0:3000
@@ -199,6 +209,9 @@ Content-Length: 35
 }
 ```
 ##### recharge
+* Recharge to a user with some amount.
+* Require user id and amount.
+* A user_amount_transaction will be created and return.
 ```
 POST /v1/users/1/recharge?amount=100 HTTP/1.1
 Host: 0.0.0.0:3000
@@ -224,11 +237,13 @@ Content-Length: 21
 ```
 ### books
 ##### index
+* List all books.
 ```
 GET /v1/books HTTP/1.1
 Host: 0.0.0.0:3000
 ```
 ##### show
+* Query one book by id.
 ```
 GET /v1/books/1 HTTP/1.1
 Host: 0.0.0.0:3000
@@ -268,6 +283,9 @@ Host: 0.0.0.0:3000
 }
 ```
 ##### income
+* Show total_income of a book, query by id and time range.
+* If time range is not given, this api will return total_income for last
+  1 day.
 ```
 GET /v1/books/1/income?from=2021-05-01&to=2021-05-11 HTTP/1.1
 Host: 0.0.0.0:3000

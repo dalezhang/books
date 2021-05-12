@@ -65,7 +65,8 @@ task :deploy do
     # instance of your project.
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
-    invoke :'bundle:install'
+    command %{~/.rvm/rubies/ruby-2.7.2/bin/bundle}
+    # invoke :'bundle:install'
     invoke :'rails:db_create'
     invoke :'rails:db_migrate'
     # invoke :'rails:assets_precompile'

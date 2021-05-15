@@ -21,6 +21,8 @@ class BooksService
       end
     end
     books_transaction
+  rescue => e
+    raise BooksException, e.errors.messages
   end
 
   def return(user_id, book_id, cost)
@@ -77,5 +79,7 @@ class BooksService
       end
     end
     new_books_transaction
+  rescue => e
+    raise BooksException, e.errors.messages
   end
 end
